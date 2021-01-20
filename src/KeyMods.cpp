@@ -4,62 +4,62 @@
 namespace ez {
 	static constexpr std::uint8_t modMask = 0xF;
 
-	void ModState::press(ModState mod) noexcept {
+	void KeyMods::press(KeyMods mod) noexcept {
 		state |= mod.state;
 	}
-	void ModState::release(ModState mod) noexcept {
+	void KeyMods::release(KeyMods mod) noexcept {
 		state &= ~mod.state;
 	}
 
-	bool ModState::isPressed(ModState mod) const noexcept {
+	bool KeyMods::isPressed(KeyMods mod) const noexcept {
 		return (mod.state & state) == mod.state;
 	}
-	bool ModState::isReleased(ModState mod) const noexcept {
+	bool KeyMods::isReleased(KeyMods mod) const noexcept {
 		return (mod.state & state) == 0;
 	}
 
 	// Check if ANY of the input modifiers are held.
-	bool ModState::anyPressed(ModState mod) const noexcept {
+	bool KeyMods::anyPressed(KeyMods mod) const noexcept {
 		return (mod.state & state) != 0;
 	}
-	bool ModState::anyReleased(ModState mod) const noexcept {
+	bool KeyMods::anyReleased(KeyMods mod) const noexcept {
 		return (mod.state & state) != mod.state;
 	}
 
 	// Check if ALL of the input modifiers are held.
-	bool ModState::allPressed(ModState mod) const noexcept {
+	bool KeyMods::allPressed(KeyMods mod) const noexcept {
 		return isPressed(mod);
 	}
-	bool ModState::allReleased(ModState mod) const noexcept {
+	bool KeyMods::allReleased(KeyMods mod) const noexcept {
 		return isReleased(mod);
 	}
 
 	// Check if NONE of the input modifiers are held.
-	bool ModState::nonePressed(ModState mod) const noexcept {
+	bool KeyMods::nonePressed(KeyMods mod) const noexcept {
 		return !anyPressed(mod);
 	}
-	bool ModState::noneReleased(ModState mod) const noexcept {
+	bool KeyMods::noneReleased(KeyMods mod) const noexcept {
 		return !anyReleased(mod);
 	}
 
-	ModState& ModState::operator|=(ModState rh) noexcept {
+	KeyMods& KeyMods::operator|=(KeyMods rh) noexcept {
 		state |= rh.state;
 		return *this;
 	}
-	ModState& ModState::operator&=(ModState rh) noexcept {
+	KeyMods& KeyMods::operator&=(KeyMods rh) noexcept {
 		state &= rh.state;
 		return *this;
 	}
-	ModState& ModState::operator^=(ModState rh) noexcept {
+	KeyMods& KeyMods::operator^=(KeyMods rh) noexcept {
 		state ^= rh.state;
 		state &= modMask;
 		return *this;
 	}
 
-	bool ModState::operator==(ModState rh) const noexcept {
+	bool KeyMods::operator==(KeyMods rh) const noexcept {
 		return state == rh.state;
 	}
-	bool ModState::operator!=(ModState rh) const noexcept {
+	bool KeyMods::operator!=(KeyMods rh) const noexcept {
 		return state != rh.state;
 	}
 
@@ -68,7 +68,7 @@ namespace ez {
 		return std::string_view{ arr, N - 1 };
 	}
 
-	std::string_view to_string_view(ModState val) noexcept {
+	std::string_view to_string_view(KeyMods val) noexcept {
 		switch (val.getRawValue()) {
 		case 0:
 			return makeView("None");
@@ -107,53 +107,53 @@ namespace ez {
 		}
 	}
 
-	std::string to_string(ez::ModState mod) {
+	std::string to_string(ez::KeyMods mod) {
 		return std::string(ez::to_string_view(mod));
 	}
 
 	
 }
 
-ez::ModState operator|(ez::ModState lh, ez::ModState rh) noexcept {
+ez::KeyMods operator|(ez::KeyMods lh, ez::KeyMods rh) noexcept {
 	lh |= rh;
 	return lh;
 }
-ez::ModState operator&(ez::ModState lh, ez::ModState rh) noexcept {
+ez::KeyMods operator&(ez::KeyMods lh, ez::KeyMods rh) noexcept {
 	lh &= rh;
 	return lh;
 }
-ez::ModState operator^(ez::ModState lh, ez::ModState rh) noexcept {
+ez::KeyMods operator^(ez::KeyMods lh, ez::KeyMods rh) noexcept {
 	lh ^= rh;
 	return lh;
 }
-ez::ModState operator~(ez::ModState lh) noexcept {
+ez::KeyMods operator~(ez::KeyMods lh) noexcept {
 	lh.state = ~lh.state;
 	lh.state &= ez::modMask;
 	return lh;
 }
 
-ez::ModState(operator|)(ez::Mod lh, ez::Mod rh) noexcept {
-	ez::ModState tmp(lh);
+ez::KeyMods(operator|)(ez::KeyMod lh, ez::KeyMod rh) noexcept {
+	ez::KeyMods tmp(lh);
 	tmp |= rh;
 	return tmp;
 }
-ez::ModState(operator&)(ez::Mod lh, ez::Mod rh) noexcept {
-	ez::ModState tmp(lh);
+ez::KeyMods(operator&)(ez::KeyMod lh, ez::KeyMod rh) noexcept {
+	ez::KeyMods tmp(lh);
 	tmp &= rh;
 	return tmp;
 }
-ez::ModState(operator^)(ez::Mod lh, ez::Mod rh) noexcept {
-	ez::ModState tmp(lh);
+ez::KeyMods(operator^)(ez::KeyMod lh, ez::KeyMod rh) noexcept {
+	ez::KeyMods tmp(lh);
 	tmp ^= rh;
 	return tmp;
 }
-ez::ModState(operator~)(ez::Mod lh) noexcept {
-	ez::ModState tmp(lh);
+ez::KeyMods(operator~)(ez::KeyMod lh) noexcept {
+	ez::KeyMods tmp(lh);
 	tmp = ~tmp;
 	return tmp;
 }
 
-std::ostream& ez::operator<<(std::ostream& os, ez::ModState mods) noexcept {
+std::ostream& ez::operator<<(std::ostream& os, ez::KeyMods mods) noexcept {
 	os << ez::to_string_view(mods);
 	return os;
 }

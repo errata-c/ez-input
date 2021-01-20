@@ -13,10 +13,10 @@ int main(int, const char **) {
 	ez::Key key0 = ez::Key::A;
 	fmt::print("key0 == {}\n", key0);
 
-	ez::Mod mod0 = ez::Mod::Alt;
+	ez::KeyMod mod0 = ez::KeyMod::Alt;
 	fmt::print("mod0 == {}\n", mod0);
 
-	ez::ModState mod1 = ez::Mod::Alt | ez::Mod::Ctrl;
+	ez::KeyMods mod1 = ez::KeyMod::Alt | ez::KeyMod::Ctrl;
 	fmt::print("mod1 == {}\n", mod1);
 
 	ez::KeyState key1{};
@@ -28,7 +28,7 @@ int main(int, const char **) {
 
 	ez::KeyEvent key2{};
 	key2.code = ez::Key::Delete;
-	key2.mods = ez::Mod::Shift | ez::Mod::System;
+	key2.mods = ez::KeyMods::Shift | ez::KeyMods::System;
 	fmt::print("key2 == {}\n", key2);
 
 	ez::Mouse mouse0 = ez::Mouse::Left;

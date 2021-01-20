@@ -7,7 +7,7 @@
 
 namespace ez {
 	namespace intern {
-		std::uint32_t getRawValue(ez::ModState mods, ez::Key key) noexcept;
+		std::uint32_t getRawValue(ez::KeyMods mods, ez::Key key) noexcept;
 	}
 	
 	class KeyGroup: public std::vector<Operator*> {
@@ -20,7 +20,7 @@ namespace ez {
 		{}
 
 		ez::Key getKey() const noexcept;
-		ez::ModState getMods() const noexcept;
+		ez::KeyMods getMods() const noexcept;
 		std::uint32_t getRawValue() const noexcept;
 
 		bool operator==(const KeyGroup& other) const noexcept;
@@ -47,12 +47,12 @@ namespace ez {
 		KeyMap() = default;
 		~KeyMap() = default;
 
-		void add(ModState mods, Key key, Operator& op);
-		bool remove(ModState mods, Key key, Operator& op);
+		void add(KeyMods mods, Key key, Operator& op);
+		bool remove(KeyMods mods, Key key, Operator& op);
 		bool remove(Operator& op);
-		bool remove(ModState mods, Key key);
+		bool remove(KeyMods mods, Key key);
 
-		iterator find(ModState mods, Key key);
-		const_iterator find(ModState mods, Key key) const;
+		iterator find(KeyMods mods, Key key);
+		const_iterator find(KeyMods mods, Key key) const;
 	};
 };

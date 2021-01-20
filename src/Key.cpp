@@ -7,13 +7,13 @@ namespace ez {
 
 	KeyEvent::KeyEvent() noexcept
 		: code(Key::None)
-		, mods(Mod::None)
+		, mods(KeyMod::None)
 	{}
 	KeyEvent::KeyEvent(Key _code) noexcept
 		: code(_code)
-		, mods(Mod::None)
+		, mods(KeyMod::None)
 	{}
-	KeyEvent::KeyEvent(Mod _mods, Key _code) noexcept
+	KeyEvent::KeyEvent(KeyMods _mods, Key _code) noexcept
 		: code(_code)
 		, mods(_mods)
 	{}
@@ -31,14 +31,14 @@ namespace ez {
 		: justPressed(Key::None)
 		, justReleased(Key::None)
 		, held(Key::None)
-		, mods(Mod::None)
+		, mods(KeyMod::None)
 	{}
 
 	void KeyState::reset() noexcept {
 		justPressed = Key::None;
 		justReleased = Key::None;
 		held = Key::None;
-		mods = Mod::None;
+		mods = KeyMod::None;
 	}
 };
 

@@ -289,30 +289,14 @@ namespace ez {
 		InputEvent event;
 		switch (ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
-			event.type = InputEventType::MousePress;
-			switch (ev.button.button) {
-			case SDL_BUTTON_LEFT:
-				event.mouse.button = (ez::Mouse::Left);
-				break;
-			case SDL_BUTTON_MIDDLE:
-				event.mouse.button = (ez::Mouse::Middle);
-				break;
-			case SDL_BUTTON_RIGHT:
-				event.mouse.button = (ez::Mouse::Right);
-				break;
-			case SDL_BUTTON_X1:
-				event.mouse.button = (ez::Mouse::Button4);
-				break;
-			case SDL_BUTTON_X2:
-				event.mouse.button = (ez::Mouse::Button5);
-				break;
-			}
-			event.mouse.position.x = ev.button.x;
-			event.mouse.position.y = ev.button.y;
-			return event;
-
 		case SDL_MOUSEBUTTONUP:
-			event.type = InputEventType::MouseRelease;
+			if(ev.button.type == SDL_MOUSEBUTTONDOWN) {
+				event.type = InputEventType::MousePress;
+			}
+			else {
+				event.type = InputEventType::MouseRelease;
+			}
+			
 			switch (ev.button.button) {
 			case SDL_BUTTON_LEFT:
 				event.mouse.button = (ez::Mouse::Left);
@@ -375,11 +359,35 @@ namespace ez {
 		case SDL_KEYDOWN:
 			event.type = InputEventType::KeyPress;
 			event.key.code = (remapSDLKey(ev.key.keysym.sym));
+			if (ev.key.keysym.mod & KMOD_CTRL) {
+				event.key.mods |= ez::KeyMod::Ctrl;
+			}
+			if (ev.key.keysym.mod & KMOD_ALT) {
+				event.key.mods |= ez::KeyMod::Alt;
+			}
+			if (ev.key.keysym.mod & KMOD_SHIFT) {
+				event.key.mods |= ez::KeyMod::Shift;
+			}
+			if (ev.key.keysym.mod & KMOD_GUI) {
+				event.key.mods |= ez::KeyMod::System;
+			}
 			return event;
 
 		case SDL_KEYUP:
 			event.type = InputEventType::KeyRelease;
 			event.key.code = (remapSDLKey(ev.key.keysym.sym));
+			if (ev.key.keysym.mod & KMOD_CTRL) {
+				event.key.mods |= ez::KeyMod::Ctrl;
+			}
+			if (ev.key.keysym.mod & KMOD_ALT) {
+				event.key.mods |= ez::KeyMod::Alt;
+			}
+			if (ev.key.keysym.mod & KMOD_SHIFT) {
+				event.key.mods |= ez::KeyMod::Shift;
+			}
+			if (ev.key.keysym.mod & KMOD_GUI) {
+				event.key.mods |= ez::KeyMod::System;
+			}
 			return event;
 
 		case SDL_JOYAXISMOTION:

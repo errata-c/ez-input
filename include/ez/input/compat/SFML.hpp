@@ -177,16 +177,16 @@ namespace ez {
 			event.key = KeyEvent{};
 			event.key.code = (remapSFMLKey(in.key.code));
 			if (in.key.control) {
-				event.key.mods |= ez::Mod::Ctrl;
+				event.key.mods |= ez::KeyMod::Ctrl;
 			}
 			if (in.key.alt) {
-				event.key.mods |= ez::Mod::Alt;
+				event.key.mods |= ez::KeyMod::Alt;
 			}
 			if (in.key.shift) {
-				event.key.mods |= ez::Mod::Shift;
+				event.key.mods |= ez::KeyMod::Shift;
 			}
 			if (in.key.system) {
-				event.key.mods |= ez::Mod::System;
+				event.key.mods |= ez::KeyMod::System;
 			}
 
 			return event;
@@ -196,16 +196,16 @@ namespace ez {
 			event.key = KeyEvent{};
 			event.key.code = (static_cast<Key>(remapSFMLKey(in.key.code)));
 			if (in.key.control) {
-				event.key.mods |= ez::Mod::Ctrl;
+				event.key.mods |= ez::KeyMod::Ctrl;
 			}
 			if (in.key.alt) {
-				event.key.mods |= ez::Mod::Alt;
+				event.key.mods |= ez::KeyMod::Alt;
 			}
 			if (in.key.shift) {
-				event.key.mods |= ez::Mod::Shift;
+				event.key.mods |= ez::KeyMod::Shift;
 			}
 			if (in.key.system) {
-				event.key.mods |= ez::Mod::System;
+				event.key.mods |= ez::KeyMod::System;
 			}
 			return event;
 

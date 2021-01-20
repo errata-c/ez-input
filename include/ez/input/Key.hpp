@@ -15,7 +15,7 @@ namespace ez {
 		// Construct with no modifers set, and keycode
 		KeyEvent(Key code) noexcept;
 		// Construct with specified modifers set, and keycode
-		KeyEvent(Mod mods, Key code) noexcept;
+		KeyEvent(KeyMods mods, Key code) noexcept;
 
 		// Returns true if the key value itself is a modifier, not if there are any modifiers.
 		bool isModifier() const noexcept;
@@ -23,7 +23,7 @@ namespace ez {
 		// Get the raw value of this class, the value will include modifier data. Internal use, you likely don't need this.
 		std::uint32_t getRawValue() const noexcept;
 
-		ModState mods;
+		KeyMods mods;
 		Key code;
 	};
 
@@ -32,7 +32,7 @@ namespace ez {
 
 		void reset() noexcept;
 
-		ModState mods;
+		KeyMods mods;
 		Key justPressed, justReleased, held;
 	};
 

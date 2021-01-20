@@ -287,7 +287,7 @@ namespace ez {
 		Right = Button3,
 	};
 
-	enum class Mod : std::uint8_t {
+	enum class KeyMod : std::uint8_t {
 		None = 0,
 		Ctrl = 1,
 		Alt = 2,
@@ -295,17 +295,17 @@ namespace ez {
 		System = 4
 	};
 
-	std::string_view to_string_view(ez::Mod val) noexcept;
+	std::string_view to_string_view(ez::KeyMod val) noexcept;
 	std::string_view to_string_view(ez::Key val) noexcept;
 	std::string_view to_string_view(ez::Mouse val) noexcept;
 	std::string_view to_string_view(ez::InputEventType val) noexcept;
 
-	std::string to_string(ez::Mod val);
+	std::string to_string(ez::KeyMod val);
 	std::string to_string(ez::Key val);
 	std::string to_string(ez::Mouse val);
 	std::string to_string(ez::InputEventType val);
 
-	std::ostream& (operator<<)(std::ostream& os, ez::Mod val) noexcept;
+	std::ostream& (operator<<)(std::ostream& os, ez::KeyMod val) noexcept;
 	std::ostream& (operator<<)(std::ostream& os, ez::Key mod) noexcept;
 	std::ostream& (operator<<)(std::ostream& os, ez::Mouse val) noexcept;
 	std::ostream& (operator<<)(std::ostream& os, ez::InputEventType val) noexcept;

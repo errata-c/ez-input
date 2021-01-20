@@ -387,26 +387,26 @@ namespace ez {
 		return os;
 	}
 
-	std::string_view to_string_view(ez::Mod mod) noexcept {
+	std::string_view to_string_view(ez::KeyMod mod) noexcept {
 		switch (mod) {
-		case Mod::Ctrl:
+		case KeyMod::Ctrl:
 			return makeView("Ctrl");
-		case Mod::Alt:
+		case KeyMod::Alt:
 			return makeView("Alt");
-		case Mod::Shift:
+		case KeyMod::Shift:
 			return makeView("Shift");
-		case Mod::System:
+		case KeyMod::System:
 			return makeView("System");
 		default:
 			return makeView("None");
 		}
 	}
 
-	std::string to_string(ez::Mod mod) {
+	std::string to_string(ez::KeyMod mod) {
 		return std::string{ ez::to_string_view(mod) };
 	}
 
-	std::ostream& operator<<(std::ostream& os, ez::Mod mod) noexcept {
+	std::ostream& operator<<(std::ostream& os, ez::KeyMod mod) noexcept {
 		os << to_string_view(mod);
 		return os;
 	}
