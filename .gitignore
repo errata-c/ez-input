@@ -2,3 +2,4 @@ out
 .vs
 .git
 CMakeSettings.json
+build

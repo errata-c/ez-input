@@ -60,7 +60,6 @@ namespace ez {
 		bool anyPressed(Mouse button, Ts... args) const noexcept {
 			return isPressed(button) || anyPressed(args...);
 		}
-		template<>
 		bool anyPressed(Mouse button) const noexcept {
 			return isPressed(button);
 		}
@@ -69,7 +68,6 @@ namespace ez {
 		bool allPressed(Mouse button, Ts... args) const noexcept {
 			return isPressed(button) && anyPressed(args...);
 		}
-		template<>
 		bool allPressed(Mouse button) const noexcept {
 			return isPressed(button);
 		}
@@ -78,7 +76,6 @@ namespace ez {
 		bool nonePressed(Mouse button, Ts... args) const noexcept {
 			return !isPressed(button) && nonePressed(args...);
 		}
-		template<>
 		bool nonePressed(Mouse button) const noexcept {
 			return !isPressed(button);
 		}

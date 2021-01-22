@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <sstream>
 #include <cstdio>
+#include <cstring>
 
 #include <utf8h/utf8.h>
 
