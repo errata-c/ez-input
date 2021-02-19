@@ -6,7 +6,7 @@ find_package(fmt CONFIG REQUIRED)
 find_package(glew REQUIRED)
 
 add_library(test_interface INTERFACE)
-target_link_libraries(test_interface INTERFACE GLEW::GLEW ez-input fmt::fmt)
+target_link_libraries(test_interface INTERFACE GLEW::GLEW ez::input fmt::fmt)
 target_compile_features(test_interface INTERFACE cxx_std_17)
 
 add_executable(sfml_test "sfml/main.cpp")
