@@ -6,7 +6,7 @@ VERSION 0.2.0)
 include(GNUInstallDirs)
 find_package(ez-cmake CONFIG REQUIRED)
 
-set(PACK_NAME "ez-input")
+set(PACK_NAME ez-input)
 set(BUILD_TESTS OFF CACHE BOOL "Build the tests for ${PACK_NAME} library.")
 
 find_package(glm CONFIG REQUIRED)
@@ -23,17 +23,18 @@ add_library("ez-input" STATIC
 	"src/enumerations.cpp"
 	)
 
-target_include_directories("ez-input" PUBLIC 
+target_include_directories(ez-input PUBLIC 
 "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
 "$<BUILD_INTERFACE:${UTF8H_INCLUDE_DIRS}>"
 "$<INSTALL_INTERFACE:include>"
 )
-target_compile_features("ez-input" PUBLIC cxx_std_17)
-target_link_libraries("ez-input" PUBLIC glm)
-target_compile_options("ez-input" PRIVATE "$<BUILD_INTERFACE:$<$<CXX_COMPILER_ID:MSVC>:/permissive->>")
-set_target_properties("ez-input" PROPERTIES EXPORT_NAME "input")
 
-add_library(ez::input ALIAS "ez-input")
+target_compile_features(ez-input PUBLIC cxx_std_17)
+target_link_libraries(ez-input PUBLIC glm)
+target_compile_options(ez-input PRIVATE "$<BUILD_INTERFACE:$<$<CXX_COMPILER_ID:MSVC>:/permissive->>")
+set_target_properties(ez-input PROPERTIES EXPORT_NAME "input")
+
+add_library(ez::input ALIAS ez-input)
 
 if(${BUILD_TESTS})
 	add_subdirectory("tests")
