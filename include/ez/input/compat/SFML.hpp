@@ -5,7 +5,7 @@
 #include <SFML/Window/Event.hpp>
 
 // Declare all (non-template) functions in the namespace as static, to prevent linking errors!
-namespace ez {
+namespace ez::input {
 	static Key remapSFMLKey(int32_t code) {
 		switch (code) {
 		case sf::Keyboard::Num0:
@@ -147,7 +147,7 @@ namespace ez {
 		}
 	}
 	
-	static InputEvent remapSFMLEvent(const sf::Event & in) {
+	static InputEvent remapEvent(const sf::Event & in) {
 		InputEvent event;
 		switch (in.type) {
 		case sf::Event::Resized:

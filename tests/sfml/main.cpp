@@ -20,10 +20,10 @@ int main() {
 	while (window.isOpen())
 	{
 		// check all the window's events that were triggered since the last iteration of the loop
-		sf::Event sfmlEvent;
-		while (window.pollEvent(sfmlEvent))
+		sf::Event sfmlev;
+		while (window.pollEvent(sfmlev))
 		{
-			ez::InputEvent event = ez::remapSFMLEvent(sfmlEvent);
+			ez::InputEvent event = ez::input::remapEvent(sfmlev);
 
 			// "close requested" event: we close the window
 			if (event.type == ez::InEv::Closed) {

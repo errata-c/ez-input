@@ -7,7 +7,6 @@
 namespace ez {
 	InputEngine::InputEngine() 
 		: _inModal(false)
-		, modalOp(nullptr)
 		, hotkeys(nullptr)
 		, pressCount(0)
 		, buttonPressed{}
@@ -33,6 +32,38 @@ namespace ez {
 		return *hotkeys;
 	}
 
+	bool InputEngine::updateEventState(const InputEvent& ev) {
+		eventState.merge(ev);
+		switch (ev.type) {
+		case InEv::Char:
+		case InEv::Scroll:
+		case InEv::TouchPress:
+		case InEv::TouchRelease:
+			return true;
+		case InEv::TouchMove:
+		case InEv::MouseMove:
+			return inModal();
+		
+		case InEv::KeyPress:
+			if (ev.key.isModifier()) {
+				return false;
+			}
+			if (eventState.key.held == ev.key.code) {
+				eventState.type = InputEventType::KeyRepeat;
+			}
+			return true;
+		case InEv::KeyRelease:
+			return !ev.key.isModifier();
+		default:
+			return false;
+		}
+	}
+
+	std::string_view InputEngine::modalOperator() const noexcept {
+		return modalName;
+	}
+
+	/*
 	bool InputEngine::handleEvent(InputEvent event) {
 		bool result = false;
 		if (hotkeys == nullptr) {
@@ -123,15 +154,15 @@ namespace ez {
 
 	bool InputEngine::dispatchEvent() {
 		if (_inModal) {
-			Operator::Result result = modalOp->modal(eventState);
+			OpResult result = modalOp->modal(eventState);
 			switch (result) {
-			case Operator::Result::Cancelled:
-			case Operator::Result::Finished:
+			case OpResult::Cancelled:
+			case OpResult::Finished:
 				_inModal = false;
 				modalOp = nullptr;
 				break;
-			case Operator::Result::PassThrough:
-			case Operator::Result::Modal:
+			case OpResult::PassThrough:
+			case OpResult::Modal:
 				break;
 			}
 			return true;
@@ -148,14 +179,14 @@ namespace ez {
 				assert(op != nullptr);
 
 				if (op->poll()) {
-					Operator::Result result = op->invoke(eventState);
+					OpResult result = op->invoke(eventState);
 					switch (result) {
-					case Operator::Result::PassThrough:
+					case OpResult::PassThrough:
 						continue;
-					case Operator::Result::Cancelled:
-					case Operator::Result::Finished:
+					case OpResult::Cancelled:
+					case OpResult::Finished:
 						return true;
-					case Operator::Result::Modal:
+					case OpResult::Modal:
 						modalOp = op;
 						_inModal = true;
 						return true;
@@ -166,6 +197,7 @@ namespace ez {
 			return false;
 		}
 	}
+	*/
 
 	void InputEngine::syncState(const InputEngine& other) {
 		if (!inModal()) {

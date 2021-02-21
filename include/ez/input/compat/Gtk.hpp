@@ -5,7 +5,7 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms.h>
 
-namespace ez {
+namespace ez::input {
 	inline Key remapGtkKey(uint32_t val){
 		switch (val) {
 		case GDK_KEY_VoidSymbol:
@@ -300,7 +300,7 @@ namespace ez {
 		}
 	}
 
-	inline InputEvent remapGtkEvent(GdkEventButton * in) {
+	inline InputEvent remapEvent(GdkEventButton * in) {
 		InputEvent ev;
 		switch (in->type) {
 		case GDK_BUTTON_PRESS:

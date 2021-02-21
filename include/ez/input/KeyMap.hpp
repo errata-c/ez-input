@@ -10,7 +10,7 @@ namespace ez {
 		std::uint32_t getRawValue(ez::KeyMods mods, ez::Key key) noexcept;
 	}
 	
-	class KeyGroup: public std::vector<Operator*> {
+	class KeyGroup: public std::vector<std::string_view> {
 	public:
 		KeyGroup()
 			: value(0)
@@ -29,17 +29,14 @@ namespace ez {
 		bool operator>(const KeyGroup& other) const noexcept;
 		bool operator<=(const KeyGroup& other) const noexcept;
 		bool operator>=(const KeyGroup& other) const noexcept;
-
 	private:
 		std::uint32_t value;
 
 		friend class KeyMap;
 	};
 
-	/// <summary>
-	/// Maps a number of key + modifier combos to the operators they're 
-	/// supposed to invoke.
-	/// </summary>
+	/*! Maps the key mods and current key value to an operator grouping.
+	*/
 	class KeyMap: public std::unordered_map<std::uint32_t, KeyGroup> {
 	public:
 		using super_t = std::unordered_map<std::uint32_t, KeyGroup>;
@@ -47,9 +44,9 @@ namespace ez {
 		KeyMap() = default;
 		~KeyMap() = default;
 
-		void add(KeyMods mods, Key key, Operator& op);
-		bool remove(KeyMods mods, Key key, Operator& op);
-		bool remove(Operator& op);
+		void add(KeyMods mods, Key key, std::string_view name);
+		bool remove(KeyMods mods, Key key, std::string_view name);
+		bool remove(std::string_view name);
 		bool remove(KeyMods mods, Key key);
 
 		iterator find(KeyMods mods, Key key);

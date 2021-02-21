@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <fmt/core.h>
+#include <fmt/ostream.h>
 #include <SDL.h>
 
 #include <ez/input/InputEngine.hpp>
@@ -21,11 +22,19 @@ int main(int argc, char ** argv) {
 
 	bool running = true;
 	while (running) {
-		SDL_Event ev;
-		int err = SDL_WaitEvent(&ev);
+		SDL_Event sdlev;
+		int err = SDL_WaitEvent(&sdlev);
 		if (err == 0) {
 			fmt::print(stderr, "SDL encountered an error doing basically nothing. A very bad sign indeed.\n");
 			running = false;
+		}
+
+		ez::InputEvent ev = ez::input::remapEvent(sdlev);
+		if (ev.type == ez::InEv::Closed) {
+			running = false;
+		}
+		else {
+			fmt::print("Input event: {}\n", ev);
 		}
 	}
 

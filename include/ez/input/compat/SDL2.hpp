@@ -7,7 +7,8 @@
 #include <SDL_scancode.h>
 #include <SDL_events.h>
 
-namespace ez {
+namespace ez::input {
+
 	static Key remapSDLKey(int32_t code) {
 		switch (code) {
 		case SDLK_0:
@@ -285,7 +286,7 @@ namespace ez {
 		}
 	}
 
-	static InputEvent remapSDLEvent(const SDL_Event & ev) {
+	static InputEvent remapEvent(const SDL_Event & ev) {
 		InputEvent event;
 		switch (ev.type) {
 		case SDL_MOUSEBUTTONDOWN:

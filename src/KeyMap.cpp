@@ -52,23 +52,23 @@ namespace ez {
 		return super_t::find(intern::getRawValue(mods, key));
 	}
 
-	void KeyMap::add(KeyMods mods, Key key, Operator& op) {
+	void KeyMap::add(KeyMods mods, Key key, std::string_view name) {
 		std::uint32_t index = intern::getRawValue(mods, key);
 
 		KeyGroup& group = super_t::operator[](index);
 		group.value = index;
 
-		group.push_back(&op);
+		group.push_back(name);
 	}
-	bool KeyMap::remove(KeyMods mods, Key key, Operator& op) {
+	bool KeyMap::remove(KeyMods mods, Key key, std::string_view name) {
 		iterator found = find(mods, key);
 		if (found == end()) {
 			return false;
 		}
 		KeyGroup& group = found->second;
 
-		KeyGroup::iterator iter = std::remove_if(group.begin(), group.end(), [&op, &key](Operator* item) {
-			return (item == &op);
+		KeyGroup::iterator iter = std::remove_if(group.begin(), group.end(), [name](std::string_view other) {
+			return other == name;
 		});
 		if (iter != group.end()) {
 			group.erase(iter, group.end());
@@ -90,15 +90,15 @@ namespace ez {
 		return true;
 	}
 
-	bool KeyMap::remove(Operator& op) {
+	bool KeyMap::remove(std::string_view name) {
 		bool found = false;
 
 		iterator it = begin();
 		iterator last = end();
 		for (; it != last; ++it) {
 			KeyGroup& group = it->second;
-			KeyGroup::iterator groupIt = std::remove_if(group.begin(), group.end(), [&op](Operator* item) {
-				return (item == &op);
+			KeyGroup::iterator groupIt = std::remove_if(group.begin(), group.end(), [name](std::string_view other) {
+				return (other == name);
 			});
 
 			if (groupIt != group.end()) {
