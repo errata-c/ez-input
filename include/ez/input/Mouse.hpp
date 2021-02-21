@@ -1,100 +1,39 @@
 #pragma once
 #include "intern/enumerations.hpp"
+#include <ez/BitFlags.hpp>
 #include <glm/vec2.hpp>
 #include <string>
 #include <string_view>
 
 namespace ez {
-	class MouseButtons;
-};
+	using MouseButtonsBase = ez::BitFlags<ez::Mouse>;
 
-ez::MouseButtons(operator|)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-ez::MouseButtons(operator&)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-ez::MouseButtons(operator^)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-ez::MouseButtons(operator~)(ez::MouseButtons lh) noexcept;
-
-ez::MouseButtons(operator|)(ez::Mouse lh, ez::Mouse rh) noexcept;
-ez::MouseButtons(operator&)(ez::Mouse lh, ez::Mouse rh) noexcept;
-ez::MouseButtons(operator^)(ez::Mouse lh, ez::Mouse rh) noexcept;
-ez::MouseButtons(operator~)(ez::Mouse lh) noexcept;
-
-namespace ez {
-
-	class MouseButtons {
+	class MouseButtons: public MouseButtonsBase {
 	public:
 		MouseButtons(const MouseButtons&) noexcept = default;
 		MouseButtons& operator=(const MouseButtons&) noexcept = default;
 
-		MouseButtons() noexcept;
-		MouseButtons(Mouse button) noexcept;
+		using MouseButtonsBase::MouseButtonsBase;
 
-		bool isPressed(Mouse button) const noexcept;
-		bool isReleased(Mouse button) const noexcept;
+		MouseButtons(MouseButtonsBase val) noexcept
+			: MouseButtonsBase(val)
+		{};
 
-		void clear() noexcept;
+		bool isPressed(MouseButtons button) const noexcept;
+		bool isReleased(MouseButtons button) const noexcept;
 
-		void press(Mouse button) noexcept;
-		void release(Mouse button) noexcept;
-		
-		template<typename ... Ts>
-		void press(Mouse button, Ts ... args) noexcept {
-			press(button);
-			press(args...);
-		}
-		template<typename ... Ts>
-		void release(Mouse button, Ts ... args) noexcept {
-			release(button);
-			release(args...);
-		}
+		void press(MouseButtons button) noexcept;
+		void release(MouseButtons button) noexcept;
 
 		int numPressed() const noexcept;
 		int numReleased() const noexcept;
 
-		bool operator==(MouseButtons other) const noexcept;
-		bool operator!=(MouseButtons other) const noexcept;
-
 		Mouse lowestPressed() const noexcept;
 		Mouse highestPressed() const noexcept;
 
-		template<typename ... Ts>
-		bool anyPressed(Mouse button, Ts... args) const noexcept {
-			return isPressed(button) || anyPressed(args...);
-		}
-		bool anyPressed(Mouse button) const noexcept {
-			return isPressed(button);
-		}
-
-		template<typename ... Ts>
-		bool allPressed(Mouse button, Ts... args) const noexcept {
-			return isPressed(button) && anyPressed(args...);
-		}
-		bool allPressed(Mouse button) const noexcept {
-			return isPressed(button);
-		}
-
-		template<typename ... Ts>
-		bool nonePressed(Mouse button, Ts... args) const noexcept {
-			return !isPressed(button) && nonePressed(args...);
-		}
-		bool nonePressed(Mouse button) const noexcept {
-			return !isPressed(button);
-		}
-
-		ez::MouseButtons& operator|=(ez::MouseButtons lh) noexcept;
-		ez::MouseButtons& operator&=(ez::MouseButtons lh) noexcept;
-		ez::MouseButtons& operator^=(ez::MouseButtons lh) noexcept;
-
-		friend ez::MouseButtons(::operator|)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-		friend ez::MouseButtons(::operator&)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-		friend ez::MouseButtons(::operator^)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept;
-		friend ez::MouseButtons(::operator~)(ez::MouseButtons lh) noexcept;
-
-		friend ez::MouseButtons(::operator|)(ez::Mouse lh, ez::Mouse rh) noexcept;
-		friend ez::MouseButtons(::operator&)(ez::Mouse lh, ez::Mouse rh) noexcept;
-		friend ez::MouseButtons(::operator^)(ez::Mouse lh, ez::Mouse rh) noexcept;
-		friend ez::MouseButtons(::operator~)(ez::Mouse lh) noexcept;
-	private:
-		int buttons;
+		bool anyPressed(MouseButtons button) const noexcept;
+		bool allPressed(MouseButtons button) const noexcept;
+		bool nonePressed(MouseButtons button) const noexcept;
 	};
 
 	// Stores mouse buttons data and the most recent mouse position, used by InputEvent and InputState classes.
@@ -149,3 +88,4 @@ namespace ez {
 
 	std::ostream& operator<<(std::ostream& os, const ez::MouseState& val);
 };
+

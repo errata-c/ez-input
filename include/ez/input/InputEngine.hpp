@@ -9,8 +9,6 @@ namespace ez {
 	class InputEngine
 	{
 	public:
-		
-
 		~InputEngine() = default;
 
 		InputEngine();
@@ -58,7 +56,7 @@ namespace ez {
 
 						Operator<context_t>& currentOp = ops.getOperator(location);
 
-						if (currentOp.poll()) {
+						if (currentOp.poll(context)) {
 							OpResult result = currentOp.invoke(eventState, context);
 							switch (result) {
 							case OpResult::PassThrough:

@@ -13,21 +13,22 @@ struct Context {};
 using Operator = ez::Operator<Context>;
 
 struct TestOp : public Operator {
+	TestOp()
+		: Operator("undo")
+	{}
 
 	bool poll(const Context& context) const override {
-
+		return true;
 	}
 	ez::OpResult execute(const ez::InputState& state, Context& context) override {
-
+		return ez::OpResult::Finished;
 	}
 	ez::OpResult invoke(const ez::InputState& state, Context& context) override {
-
-	}
-	ez::OpResult modal(const ez::InputState& state, Context& context) override {
-
-	}
-	bool cancel(Context& context) override {
-		return true;
+		if (state.type == ez::InEv::KeyPress) {
+			fmt::print("Operator invoked!\n");
+		}
+		
+		return ez::OpResult::Finished;
 	}
 };
 
@@ -47,6 +48,14 @@ int main() {
 	ez::InputEngine inputEngine;
 	ez::OperatorRegistry<Context> ops;
 
+	Context context;
+
+	ops.add(new TestOp{});
+	assert(ops.contains("undo"));
+
+	mapping.add(ez::KeyMod::Ctrl, ez::Key::Z, "undo");
+	inputEngine.setKeyMap(mapping);
+
 	// run the program as long as the window is open
 	while (window.isOpen())
 	{
@@ -61,7 +70,7 @@ int main() {
 				window.close();
 			}
 			else {
-				fmt::print("{}\n", event.to_string());
+				inputEngine.handleEvent(event, context, ops);
 			}
 		}
 	}

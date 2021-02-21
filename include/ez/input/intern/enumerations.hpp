@@ -279,6 +279,9 @@ namespace ez {
 		// All buttons greater than button3 are extra buttons, with no predefined name. Hardware dependent.
 		Button16 = 15,
 
+		_Count,
+		_EnableOperators,
+
 		// Left mouse button
 		Left = Button1,
 		// Middle mouse button
@@ -287,27 +290,30 @@ namespace ez {
 		Right = Button3,
 	};
 
-	enum class KeyMod : std::uint8_t {
-		None = 0,
-		Ctrl = 1,
-		Alt = 2,
-		Shift = 3,
-		System = 4
+	enum class KeyMod : std::int8_t {
+		None = -1,
+		Ctrl = 0,
+		Alt = 1,
+		Shift = 2,
+		System = 3,
+		_Count,
+		_EnableOperators
 	};
 
 	std::string_view to_string_view(ez::KeyMod val) noexcept;
 	std::string_view to_string_view(ez::Key val) noexcept;
 	std::string_view to_string_view(ez::Mouse val) noexcept;
-	std::string_view to_string_view(ez::InputEventType val) noexcept;
+	std::string_view to_string_view(ez::InEv val) noexcept;
 
 	std::string to_string(ez::KeyMod val);
 	std::string to_string(ez::Key val);
 	std::string to_string(ez::Mouse val);
-	std::string to_string(ez::InputEventType val);
+	std::string to_string(ez::InEv val);
 
-	std::ostream& (operator<<)(std::ostream& os, ez::KeyMod val) noexcept;
-	std::ostream& (operator<<)(std::ostream& os, ez::Key mod) noexcept;
-	std::ostream& (operator<<)(std::ostream& os, ez::Mouse val) noexcept;
-	std::ostream& (operator<<)(std::ostream& os, ez::InputEventType val) noexcept;
+	std::ostream& (operator<<)(std::ostream& os, ez::KeyMod val);
+	std::ostream& (operator<<)(std::ostream& os, ez::Key mod);
+	std::ostream& (operator<<)(std::ostream& os, ez::Mouse val);
+	std::ostream& (operator<<)(std::ostream& os, ez::InEv val);
 };
+// Declare them inside the ez namespace first, fixes certain name resolution errors.
 using ez::operator<<;

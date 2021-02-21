@@ -38,12 +38,14 @@ namespace ez {
 			return elements.size();
 		};
 
-		bool add(std::string_view name, operator_t* op) {
+		bool add(operator_t* op) {
 			return add(std::unique_ptr<operator_t>(op));
 		};
-		bool add(std::string_view name, std::unique_ptr<operator_t>&& op) {
+		bool add(std::unique_ptr<operator_t>&& op) {
+			std::string_view name = op->name();
+
 			std::size_t hash = std::hash<std::string_view>{}(name);
-			if (elements.find(hash) == elements.end()) {
+			if (elements.find(hash) != elements.end()) {
 				return false;
 			}
 			else {
@@ -71,11 +73,11 @@ namespace ez {
 
 		operator_t& getOperator(const_iterator location) {
 			assert(location != end());
-			return const_cast<operator_t&>(*location->second);
+			return const_cast<operator_t&>(*location->second.op);
 		};
 		const operator_t& getOperator(const_iterator location) const {
 			assert(location != end());
-			return *location->second;
+			return *(location->second.op);
 		};
 
 		const_iterator find(std::string_view name) const noexcept {

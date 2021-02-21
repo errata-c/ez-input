@@ -1,39 +1,24 @@
 #pragma once
 #include "intern/enumerations.hpp"
+#include <ez/BitFlags.hpp>
 #include <string>
 #include <string_view>
 
 namespace ez {
-	class KeyMods;
-	
-	std::ostream& (operator<<)(std::ostream& os, ez::KeyMods mods) noexcept;
-};
-using ez::operator<<;
+	using KeyModsBase = ez::BitFlags<KeyMod>;
 
-ez::KeyMods(operator|)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-ez::KeyMods(operator&)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-ez::KeyMods(operator^)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-ez::KeyMods(operator~)(ez::KeyMods lh) noexcept;
-
-ez::KeyMods(operator|)(ez::KeyMod lh, ez::KeyMod rh) noexcept;
-ez::KeyMods(operator&)(ez::KeyMod lh, ez::KeyMod rh) noexcept;
-ez::KeyMods(operator^)(ez::KeyMod lh, ez::KeyMod rh) noexcept;
-ez::KeyMods(operator~)(ez::KeyMod lh) noexcept;
-
-namespace ez {
-	class KeyMods {
+	class KeyMods: public KeyModsBase {
 	public:
 		static constexpr KeyMod Ctrl = KeyMod::Ctrl;
 		static constexpr KeyMod Alt = KeyMod::Alt;
 		static constexpr KeyMod Shift = KeyMod::Shift;
 		static constexpr KeyMod System = KeyMod::System;
 
-		constexpr KeyMods() noexcept
-			: state(0)
-		{}
-		constexpr KeyMods(KeyMod mod) noexcept
-			: state(1 << static_cast<int>(mod))
-		{}
+		using KeyModsBase::KeyModsBase;
+
+		KeyMods(KeyModsBase val)
+			: KeyModsBase(val)
+		{};
 
 		KeyMods(const KeyMods&) noexcept = default;
 		KeyMods& operator=(const KeyMods&) noexcept = default;
@@ -55,27 +40,12 @@ namespace ez {
 		// Check if NONE of the input modifiers are held.
 		bool nonePressed(KeyMods mods) const noexcept;
 		bool noneReleased(KeyMods mods) const noexcept;
-
-		KeyMods& operator|=(KeyMods rh) noexcept;
-		KeyMods& operator&=(KeyMods rh) noexcept;
-		KeyMods& operator^=(KeyMods rh) noexcept;
-
-		bool operator==(KeyMods rh) const noexcept;
-		bool operator!=(KeyMods rh) const noexcept;
-
-		std::uint32_t getRawValue() const noexcept {
-			return state;
-		}
-
-		friend ez::KeyMods(::operator|)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-		friend ez::KeyMods(::operator&)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-		friend ez::KeyMods(::operator^)(ez::KeyMods lh, ez::KeyMods rh) noexcept;
-		friend ez::KeyMods(::operator~)(ez::KeyMods lh) noexcept;
-
-	private:
-		std::uint8_t state;
 	};
 
-	std::string_view to_string_view(KeyMods mod) noexcept;
 	std::string to_string(KeyMods mod);
+
+	// Fix namespace look up, allows operator to be used inside the namespace, also fixes lookup in libfmt
+	inline std::ostream& operator<<(std::ostream& os, KeyMods mods) {
+		return ::operator<<(os, mods);
+	}
 };

@@ -24,7 +24,7 @@ namespace ez {
 	}
 
 	std::uint32_t KeyEvent::getRawValue() const noexcept {
-		return (mods.getRawValue() << 28) | static_cast<std::uint32_t>(code);
+		return (mods.rawValue() << 28) | static_cast<std::uint32_t>(code);
 	}
 
 	KeyState::KeyState() noexcept
@@ -49,9 +49,11 @@ std::string_view makeView(const char (&arr)[N]) {
 
 
 std::string ez::to_string(ez::KeyEvent ev) {
+	std::string modStr = ez::to_string(ev.mods);
+
 	std::array<std::string_view, 5> text{
 		makeView("{ mods: ["),
-		ez::to_string_view(ev.mods),
+		modStr,
 		makeView("], code: "),
 		ez::to_string_view(ev.code),
 		makeView(" }")
@@ -74,6 +76,8 @@ std::string ez::to_string(ez::KeyEvent ev) {
 }
 
 std::string ez::to_string(ez::KeyState state) {
+	std::string modStr = ez::to_string(state.mods);
+
 	std::array<std::string_view, 9> text{
 		makeView("{ held: "),
 		ez::to_string_view(state.held),
@@ -82,7 +86,7 @@ std::string ez::to_string(ez::KeyState state) {
 		makeView(", justReleased: "),
 		ez::to_string_view(state.justReleased),
 		makeView(", mods: ["),
-		ez::to_string_view(state.mods),
+		modStr,
 		makeView("] }")
 	};
 	std::size_t total = 0;

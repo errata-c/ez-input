@@ -33,6 +33,11 @@ namespace ez {
 	}
 
 	bool InputEngine::updateEventState(const InputEvent& ev) {
+		bool repeat = false;
+		if (ev.type == InEv::KeyPress && ev.key.code == eventState.key.held) {
+			repeat = true;
+		}
+
 		eventState.merge(ev);
 		switch (ev.type) {
 		case InEv::Char:
@@ -48,7 +53,7 @@ namespace ez {
 			if (ev.key.isModifier()) {
 				return false;
 			}
-			if (eventState.key.held == ev.key.code) {
+			if (repeat) {
 				eventState.type = InputEventType::KeyRepeat;
 			}
 			return true;

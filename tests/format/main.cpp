@@ -7,7 +7,7 @@
 #include <fmt/core.h>
 #include <fmt/ostream.h>
 
-int main(int, const char **) {
+int main(int argc, char* argv[]) {
 	fmt::print("Testing formating compatibility.\n");
 
 	ez::Key key0 = ez::Key::A;

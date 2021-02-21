@@ -3,7 +3,7 @@
 namespace ez {
 	namespace intern {
 		std::uint32_t getRawValue(ez::KeyMods mods, ez::Key key) noexcept {
-			return (mods.getRawValue() << 28) | static_cast<std::uint32_t>(key);
+			return (mods.rawValue() << 28) | static_cast<std::uint32_t>(key);
 		}
 	}
 

@@ -377,16 +377,6 @@ namespace ez {
 
 		};
 	}
-	
-	std::string to_string(ez::Key code) {
-		return std::string{ ez::to_string_view(code) };
-	}
-	
-	std::ostream& operator<<(std::ostream& os, ez::Key val) noexcept {
-		os << to_string_view(val);
-		return os;
-	}
-
 	std::string_view to_string_view(ez::KeyMod mod) noexcept {
 		switch (mod) {
 		case KeyMod::Ctrl:
@@ -401,16 +391,6 @@ namespace ez {
 			return makeView("None");
 		}
 	}
-
-	std::string to_string(ez::KeyMod mod) {
-		return std::string{ ez::to_string_view(mod) };
-	}
-
-	std::ostream& operator<<(std::ostream& os, ez::KeyMod mod) noexcept {
-		os << to_string_view(mod);
-		return os;
-	}
-
 	std::string_view to_string_view(ez::InEv type) noexcept {
 		using ez::InEv;
 
@@ -497,17 +477,6 @@ namespace ez {
 			return makeView("None");
 		}
 	}
-
-	std::ostream& operator<<(std::ostream& os, ez::InEv ev) noexcept {
-		os << to_string_view(ev);
-		return os;
-	}
-
-	std::string to_string(ez::InEv event) {
-		return std::string{ to_string_view(event) };
-	}
-
-
 	std::string_view to_string_view(Mouse button) noexcept {
 		switch (button) {
 		case Mouse::Left:
@@ -547,13 +516,37 @@ namespace ez {
 		}
 	}
 
+
+	std::string to_string(ez::Key code) {
+		return std::string{ ez::to_string_view(code) };
+	}
+	std::string to_string(ez::KeyMod mod) {
+		return std::string{ ez::to_string_view(mod) };
+	}
+	std::string to_string(ez::InEv event) {
+		return std::string{ to_string_view(event) };
+	}
 	std::string to_string(ez::Mouse button) {
 		return std::string{ to_string_view(button) };
 	}
+};
 
-	std::ostream& operator<<(std::ostream& os, ez::Mouse button) noexcept {
+
+namespace ez {
+	std::ostream& operator<<(std::ostream& os, ez::Key val) {
+		os << to_string_view(val);
+		return os;
+	}
+	std::ostream& operator<<(std::ostream& os, ez::KeyMod mod) {
+		os << to_string_view(mod);
+		return os;
+	}
+	std::ostream& operator<<(std::ostream& os, ez::InEv ev) {
+		os << to_string_view(ev);
+		return os;
+	}
+	std::ostream& operator<<(std::ostream& os, ez::Mouse button) {
 		os << to_string_view(button);
 		return os;
 	}
-
 };

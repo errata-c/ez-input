@@ -4,114 +4,50 @@
 #include <cstdio>
 #include <algorithm>
 
-constexpr int buttonMask = 0xFF;
-
-ez::MouseButtons(operator|)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept {
-	lh.buttons = lh.buttons | rh.buttons;
-	return lh;
-}
-ez::MouseButtons(operator&)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept {
-	lh.buttons = lh.buttons & rh.buttons;
-	return lh;
-}
-ez::MouseButtons(operator^)(ez::MouseButtons lh, ez::MouseButtons rh) noexcept {
-	lh.buttons = lh.buttons ^ rh.buttons;
-	lh.buttons &= buttonMask;
-	return lh;
-}
-ez::MouseButtons(operator~)(ez::MouseButtons lh) noexcept {
-	lh.buttons = (~lh.buttons) & buttonMask;
-	return lh;
-}
-
-ez::MouseButtons(operator|)(ez::Mouse lh, ez::Mouse rh) noexcept {
-	return ez::MouseButtons(lh) | ez::MouseButtons(rh);
-}
-ez::MouseButtons(operator&)(ez::Mouse lh, ez::Mouse rh) noexcept {
-	return ez::MouseButtons(lh) & ez::MouseButtons(rh);
-}
-ez::MouseButtons(operator^)(ez::Mouse lh, ez::Mouse rh) noexcept {
-	return ez::MouseButtons(lh) ^ ez::MouseButtons(rh);
-}
-ez::MouseButtons(operator~)(ez::Mouse lh) noexcept {
-	return ez::MouseButtons(lh);
-}
-
 namespace ez {
-	MouseButtons::MouseButtons() noexcept
-		: buttons(0)
-	{}
 
-	MouseButtons::MouseButtons(Mouse button) noexcept
-		: buttons(1 << static_cast<int>(button))
-	{}
-
-	bool MouseButtons::isPressed(Mouse button) const noexcept {
-		return (buttons & (1 << static_cast<int>(button))) != 0;
+	bool MouseButtons::isPressed(MouseButtons buttons) const noexcept {
+		return allOf(buttons);
 	}
-	bool MouseButtons::isReleased(Mouse button) const noexcept {
-		return (buttons & (1 << static_cast<int>(button))) == 0;
+	bool MouseButtons::isReleased(MouseButtons buttons) const noexcept {
+		return noneOf(buttons);
 	}
 
-	void MouseButtons::clear() noexcept {
-		buttons = 0;
+	void MouseButtons::press(MouseButtons buttons) noexcept {
+		*this |= buttons;
 	}
-
-	void MouseButtons::press(Mouse button) noexcept {
-		buttons |= 1 << static_cast<int>(button);
-	}
-	void MouseButtons::release(Mouse button) noexcept {
-		buttons &= ~(1 << static_cast<int>(button));
+	void MouseButtons::release(MouseButtons buttons) noexcept {
+		*this &= ~buttons;
 	}
 
 	int MouseButtons::numPressed() const noexcept {
-		int tmp = buttons;
-		tmp = ((tmp & 0xAAAA) >> 1) + (tmp & 0x5555);
-		tmp = ((tmp & 0xCCCC) >> 2) + (tmp & 0x3333);
-		tmp = ((tmp & 0xF0F0) >> 4) + (tmp & 0x0F0F);
-		tmp = ((tmp & 0xFF00) >> 8) + (tmp & 0x00FF);
-
-		return tmp;
+		return numSet();
 	}
 	int MouseButtons::numReleased() const noexcept {
-		return 16 - numPressed();
-	}
-
-	bool MouseButtons::operator==(MouseButtons other) const noexcept {
-		return buttons == other.buttons;
-	}
-	bool MouseButtons::operator!=(MouseButtons other) const noexcept {
-		return buttons != other.buttons;
+		return numUnset();
 	}
 
 	Mouse MouseButtons::lowestPressed() const noexcept {
-		for (int i = 0; i < 16; ++i) {
-			if (buttons & (1 << i)) {
-				return static_cast<Mouse>(i);
-			}
+		if (!empty()) {
+			return front();
 		}
 		return Mouse::None;
 	}
 	Mouse MouseButtons::highestPressed() const noexcept {
-		for (int i = 15; i > -1; --i) {
-			if (buttons & (1 << i)) {
-				return static_cast<Mouse>(i);
-			}
+		if (!empty()) {
+			return back();
 		}
 		return Mouse::None;
 	}
 
-	ez::MouseButtons& ez::MouseButtons::operator|=(ez::MouseButtons lh) noexcept {
-		*this = *this | lh;
-		return *this;
+	bool MouseButtons::anyPressed(MouseButtons buttons) const noexcept {
+		return anyOf(buttons);
 	}
-	ez::MouseButtons& ez::MouseButtons::operator&=(ez::MouseButtons lh) noexcept {
-		*this = *this & lh;
-		return *this;
+	bool MouseButtons::allPressed(MouseButtons buttons) const noexcept {
+		return allOf(buttons);
 	}
-	ez::MouseButtons& ez::MouseButtons::operator^=(ez::MouseButtons lh) noexcept {
-		*this = *this ^ lh;
-		return *this;
+	bool MouseButtons::nonePressed(MouseButtons buttons) const noexcept {
+		return noneOf(buttons);
 	}
 };
 
