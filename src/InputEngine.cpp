@@ -44,6 +44,9 @@ namespace ez {
 		case InEv::Scroll:
 		case InEv::TouchPress:
 		case InEv::TouchRelease:
+		case InEv::MousePress:
+		case InEv::MouseRelease:
+		case InEv::MouseClick:
 			return true;
 		case InEv::TouchMove:
 		case InEv::MouseMove:

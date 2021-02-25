@@ -41,7 +41,7 @@ namespace ez {
 		* then uses to guide behaviour. Then just have invoke/modal fill those attributes
 		* with data from the event, and call execute().
 		*/
-		virtual Result execute(const InputState & state, context_t& context) {
+		virtual Result execute(context_t& context) {
 			return Result::Finished;
 		};
 

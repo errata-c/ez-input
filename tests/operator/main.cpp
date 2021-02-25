@@ -20,7 +20,7 @@ struct TestOp : public Operator {
 	bool poll(const Context& context) const override {
 		return true;
 	}
-	ez::OpResult execute(const ez::InputState& state, Context& context) override {
+	ez::OpResult execute(Context& context) override {
 		return ez::OpResult::Finished;
 	}
 	ez::OpResult invoke(const ez::InputState& state, Context& context) override {
