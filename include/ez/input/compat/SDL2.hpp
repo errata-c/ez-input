@@ -286,16 +286,16 @@ namespace ez::input {
 		}
 	}
 
-	static InputEvent remapEvent(const SDL_Event & ev) {
-		InputEvent event;
+	static ez::InputEvent remapEvent(const SDL_Event & ev) {
+		ez::InputEvent event;
 		switch (ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			if(ev.button.type == SDL_MOUSEBUTTONDOWN) {
-				event.type = InputEventType::MousePress;
+				event.type = ez::InEv::MousePress;
 			}
 			else {
-				event.type = InputEventType::MouseRelease;
+				event.type = ez::InEv::MouseRelease;
 			}
 			
 			switch (ev.button.button) {
@@ -320,45 +320,46 @@ namespace ez::input {
 			return event;
 
 		case SDL_MOUSEMOTION:
-			event.type = InputEventType::MouseMove;
+			event.type = ez::InEv::MouseMove;
+			event.mouse.button = ez::Mouse::None;
 			event.mouse.position.x = ev.motion.x;
 			event.mouse.position.y = ev.motion.y;
 			return event;
 
 		case SDL_MOUSEWHEEL:
-			event.type = InputEventType::Scroll;
+			event.type = ez::InEv::Scroll;
 			event.scroll.x = ev.wheel.x;
 			event.scroll.y = ev.wheel.y;
 			return event;
 
 		case SDL_CONTROLLERAXISMOTION:
-			event.type = InputEventType::ControllerMove;
+			event.type = ez::InEv::ControllerMove;
 			return event;
 		case SDL_CONTROLLERBUTTONDOWN:
-			event.type = InputEventType::ControllerPress;
+			event.type = ez::InEv::ControllerPress;
 			return event;
 		case SDL_CONTROLLERBUTTONUP:
-			event.type = InputEventType::ControllerRelease;
+			event.type = ez::InEv::ControllerRelease;
 			return event;
 		case SDL_CONTROLLERDEVICEADDED:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::ControllerConnect;
 			return event;
 		case SDL_CONTROLLERDEVICEREMOVED:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::ControllerDisconnect;
 			return event;
 
 		case SDL_FINGERMOTION:
-			event.type = InputEventType::TouchMove;
+			event.type = ez::InEv::TouchMove;
 			return event;
 		case SDL_FINGERDOWN:
-			event.type = InputEventType::TouchPress;
+			event.type = ez::InEv::TouchPress;
 			return event;
 		case SDL_FINGERUP:
-			event.type = InputEventType::TouchRelease;
+			event.type = ez::InEv::TouchRelease;
 			return event;
 
 		case SDL_KEYDOWN:
-			event.type = InputEventType::KeyPress;
+			event.type = ez::InEv::KeyPress;
 			event.key.code = (remapSDLKey(ev.key.keysym.sym));
 			if (ev.key.keysym.mod & KMOD_CTRL) {
 				event.key.mods |= ez::KeyMod::Ctrl;
@@ -375,7 +376,7 @@ namespace ez::input {
 			return event;
 
 		case SDL_KEYUP:
-			event.type = InputEventType::KeyRelease;
+			event.type = ez::InEv::KeyRelease;
 			event.key.code = (remapSDLKey(ev.key.keysym.sym));
 			if (ev.key.keysym.mod & KMOD_CTRL) {
 				event.key.mods |= ez::KeyMod::Ctrl;
@@ -392,31 +393,31 @@ namespace ez::input {
 			return event;
 
 		case SDL_JOYAXISMOTION:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYBALLMOTION:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYHATMOTION:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYBUTTONDOWN:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYBUTTONUP:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYDEVICEADDED:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_JOYDEVICEREMOVED:
-			event.type = InputEventType::Char;
+			event.type = ez::InEv::None;
 			return event;
 
 		case SDL_QUIT:
@@ -441,32 +442,48 @@ namespace ez::input {
 		case SDL_WINDOWEVENT: {
 			switch (ev.window.event) {
 			case SDL_WINDOWEVENT_RESIZED:
+				/// Ignore this event, size_changed event always comes first!
+				//event.type = ez::InEv::Resized;
+				//event.size = glm::ivec2{ ev.window.data1, ev.window.data2 };
 				break;
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
-				event.type = InputEventType::Resized;
-				event.size = { ev.window.data1, ev.window.data2 };
+				event.type = ez::InEv::Resized;
+				event.size = glm::ivec2{ ev.window.data1, ev.window.data2 };
 				break;
 			case SDL_WINDOWEVENT_FOCUS_GAINED:
-				event.type = InputEventType::FocusGained;
+				event.type = ez::InEv::FocusGained;
 				break;
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				event.type = InputEventType::FocusLost;
+				event.type = ez::InEv::FocusLost;
 				break;
 			case SDL_WINDOWEVENT_ENTER:
-				event.type = InputEventType::MouseEnter;
+				event.type = ez::InEv::MouseEnter;
 				break;
 			case SDL_WINDOWEVENT_LEAVE:
-				event.type = InputEventType::MouseLeave;
+				event.type = ez::InEv::MouseLeave;
 				break;
 			case SDL_WINDOWEVENT_CLOSE:
-				event.type = InputEventType::Closed;
+				event.type = ez::InEv::Closed;
 				break;
 			case SDL_WINDOWEVENT_MINIMIZED:
-				event.type = InputEventType::Minimized;
+				event.type = ez::InEv::Minimized;
 				break;
 			case SDL_WINDOWEVENT_MAXIMIZED:
-				event.type = InputEventType::Maximized;
+				event.type = ez::InEv::Maximized;
 				break;
+			case SDL_WINDOWEVENT_SHOWN:
+				event.type = ez::InEv::Shown;
+				break;
+			case SDL_WINDOWEVENT_HIDDEN:
+				event.type = ez::InEv::Hidden;
+				break;
+			case SDL_WINDOWEVENT_EXPOSED:
+				event.type = ez::InEv::Exposed;
+				break;
+			case SDL_WINDOWEVENT_RESTORED:
+			case SDL_WINDOWEVENT_TAKE_FOCUS:
+			case SDL_WINDOWEVENT_HIT_TEST:
+			case SDL_WINDOWEVENT_MOVED:
 			default:
 				break;
 			}

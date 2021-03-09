@@ -105,11 +105,11 @@ std::string ez::to_string(const ez::MouseEvent& val) {
 	std::array<std::string_view, 7> text{
 		makeView("{ button: "),
 		ez::to_string_view(val.button),
-		makeView(", position: [ "),
+		makeView(", position: ["),
 		std::string_view(xpos, std::min(15, snprintf(xpos, 16, "%.6g", val.position.x))),
 		makeView(", "),
 		std::string_view(ypos, std::min(15, snprintf(ypos, 16, "%.6g", val.position.y))),
-		makeView(" ] }")
+		makeView("] }")
 	};
 
 	std::size_t len = 0;
@@ -140,11 +140,11 @@ std::string ez::to_string(const ez::MouseState& val) {
 		ez::to_string_view(val.justPressed),
 		makeView(", justReleased: "),
 		ez::to_string_view(val.justReleased),
-		makeView(", position: [ "),
+		makeView(", position: ["),
 		std::string_view(xpos, std::min(15, snprintf(xpos, 16, "%.6g", val.position.x))),
 		makeView(", "),
 		std::string_view(ypos, std::min(15, snprintf(ypos, 16, "%.6g", val.position.y))),
-		makeView(" ] }")
+		makeView("] }")
 	};
 
 	std::size_t len = 0;

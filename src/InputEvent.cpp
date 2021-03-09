@@ -15,13 +15,16 @@ std::string_view makeView(const char(&arr)[N]) {
 namespace ez {
 	InputEvent::InputEvent() noexcept
 		: type(InEv::None)
-		, codepoint(0)
-	{}
+	{
+		std::memset(data, 0, sizeof(data));
+	}
 
 	InputEvent::InputEvent(InEv t, Key k) noexcept
-		: type(t)
-		, key(k)
-	{}
+		: InputEvent()
+	{
+		type = t;
+		key = k;
+	}
 
 	InputEvent::InputEvent(InEv t, Mouse m) noexcept
 		: type(t)
@@ -29,18 +32,23 @@ namespace ez {
 	{}
 
 	InputEvent::InputEvent(InEv t, uint32_t unicode) noexcept
-		: type(t)
-		, codepoint(unicode)
-	{}
+		: InputEvent()
+	{
+		type = t;
+		codepoint = unicode;
+	}
 
 	InputEvent::InputEvent(InEv t, glm::dvec2 delta) noexcept
-		: type(t)
-		, scroll(delta)
-	{}
+		: InputEvent()
+	{
+		type = t;
+		scroll = delta;
+	}
 
 	InputEvent::InputEvent(const InputEvent& other) noexcept
 	{
-		std::memcpy(this, &other, sizeof(InputEvent));
+		type = other.type;
+		std::memcpy(data, other.data, sizeof(data));
 	}
 
 	InputEvent::~InputEvent() {
@@ -48,7 +56,8 @@ namespace ez {
 	}
 
 	InputEvent& InputEvent::operator=(const InputEvent& other) noexcept {
-		std::memcpy(this, &other, sizeof(InputEvent));
+		type = other.type;
+		std::memcpy(data, other.data, sizeof(data));
 		return *this;
 	}
 
@@ -114,20 +123,20 @@ namespace ez {
 
 		case InEv::Resized: {
 			char xpos[16], ypos[16];
-			staticWrite(ss, ", size: [ ");
+			staticWrite(ss, ", size: [");
 			ss.write(xpos, std::min(15, snprintf(xpos, 16, "%d", val.size.x)));
 			staticWrite(ss, ", ");
 			ss.write(xpos, std::min(15, snprintf(ypos, 16, "%d", val.size.y)));
-			staticWrite(ss, " ]");
+			staticWrite(ss, "]");
 			break;
 		}
 		case InEv::Scroll: {
 			char xpos[16], ypos[16];
-			staticWrite(ss, ", scroll: [ ");
+			staticWrite(ss, ", scroll: [");
 			ss.write(xpos, std::min(15, snprintf(xpos, 16, "%.6g", val.scroll.x)));
 			staticWrite(ss, ", ");
 			ss.write(xpos, std::min(15, snprintf(ypos, 16, "%.6g", val.scroll.y)));
-			staticWrite(ss, " ]");
+			staticWrite(ss, "]");
 			break;
 		}
 		case InEv::TouchMove:

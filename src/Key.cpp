@@ -52,9 +52,9 @@ std::string ez::to_string(ez::KeyEvent ev) {
 	std::string modStr = ez::to_string(ev.mods);
 
 	std::array<std::string_view, 5> text{
-		makeView("{ mods: ["),
+		makeView("{ mods: "),
 		modStr,
-		makeView("], code: "),
+		makeView(", code: "),
 		ez::to_string_view(ev.code),
 		makeView(" }")
 	};
@@ -85,9 +85,9 @@ std::string ez::to_string(ez::KeyState state) {
 		ez::to_string_view(state.justPressed),
 		makeView(", justReleased: "),
 		ez::to_string_view(state.justReleased),
-		makeView(", mods: ["),
+		makeView(", mods: "),
 		modStr,
-		makeView("] }")
+		makeView(" }")
 	};
 	std::size_t total = 0;
 	for (std::string_view view : text) {

@@ -90,11 +90,17 @@ namespace ez {
 		// Window was hidden
 		Hidden,
 
+		// Window was minimized
 		Minimized,
 
+		// Window was maximized
 		Maximized,
 
+		// Window manager has requested this window close.
 		Closed,
+
+		// Window should be redrawn
+		Exposed,
 
 		// This is the type of a default constructed input event. On some backends an event will be generated with this type when the source event is unsupported.
 		None,

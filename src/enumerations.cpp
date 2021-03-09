@@ -1,5 +1,6 @@
 #include <ez/input/intern/enumerations.hpp>
 #include <ostream>
+#include <cassert>
 
 template<std::size_t N>
 std::string_view makeView(const char(&arr)[N]) {
@@ -11,7 +12,7 @@ namespace ez {
 		using Key = ez::Key;
 		switch (code) {
 		case Key::A:
-			return makeView("A");;
+			return makeView("A");
 
 		case Key::B:
 			return makeView("B");
@@ -379,6 +380,8 @@ namespace ez {
 	}
 	std::string_view to_string_view(ez::KeyMod mod) noexcept {
 		switch (mod) {
+		case KeyMod::None:
+			return makeView("None");
 		case KeyMod::Ctrl:
 			return makeView("Ctrl");
 		case KeyMod::Alt:
@@ -388,6 +391,7 @@ namespace ez {
 		case KeyMod::System:
 			return makeView("System");
 		default:
+			assert(false);
 			return makeView("None");
 		}
 	}
@@ -473,12 +477,24 @@ namespace ez {
 		case InEv::Minimized:
 			return makeView("Minimized");
 
+		case InEv::Exposed:
+			return makeView("Exposed");
+
+		case InEv::Resized:
+			return makeView("Resized");
+
+		case InEv::None:
+			return makeView("None");
+
 		default:
+			assert(false);
 			return makeView("None");
 		}
 	}
 	std::string_view to_string_view(Mouse button) noexcept {
 		switch (button) {
+		case Mouse::None:
+			return makeView("None");
 		case Mouse::Left:
 			return makeView("Left");
 		case Mouse::Right:
@@ -512,6 +528,7 @@ namespace ez {
 		case Mouse::Button16:
 			return makeView("Button16");
 		default:
+			assert(false);
 			return makeView("None");
 		}
 	}

@@ -37,6 +37,8 @@ namespace ez {
 			uint32_t codepoint;
 			glm::dvec2 scroll;
 			glm::ivec2 size;
+
+			char data[24];
 		};
 	};
 
