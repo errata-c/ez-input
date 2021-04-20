@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(EZ_INPUT
-VERSION 0.2.0)
+VERSION 0.2.1
+LANGUAGES C CXX
+)
 
 include(GNUInstallDirs)
-find_package(ez-cmake CONFIG REQUIRED)
+include("cmake/ez-cmake/install-package.cmake")
 
-set(PACK_NAME ez-input)
-set(BUILD_TESTS OFF CACHE BOOL "Build the tests for ${PACK_NAME} library.")
+option(BUILD_TESTS "Build the test executables" ON)
+option(SEPARATE_DIRECTORY "Install the package into its own directory" ON)
+set(CONFIG_DIR "${CMAKE_INSTALL_DATAROOTDIR}/ez-input" CACHE STRING "The relative directory to install package config files.")
+
 
 find_package(glm CONFIG REQUIRED)
 find_package(ez-bitflags CONFIG REQUIRED)
@@ -22,16 +26,19 @@ add_library("ez-input" STATIC
 	"src/KeyMap.cpp"
 	"src/KeyMods.cpp"
 	"src/enumerations.cpp"
-	)
+)
 
 target_include_directories(ez-input PUBLIC 
-"$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
-"$<BUILD_INTERFACE:${UTF8H_INCLUDE_DIRS}>"
-"$<INSTALL_INTERFACE:include>"
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
+	"$<BUILD_INTERFACE:${UTF8H_INCLUDE_DIRS}>"
+	"$<INSTALL_INTERFACE:include>"
 )
 
 target_compile_features(ez-input PUBLIC cxx_std_17)
-target_link_libraries(ez-input PUBLIC glm ez::bitflags)
+target_link_libraries(ez-input PUBLIC 
+	glm::glm 
+	ez::bitflags
+)
 target_compile_options(ez-input PRIVATE "$<BUILD_INTERFACE:$<$<CXX_COMPILER_ID:MSVC>:/permissive->>")
 set_target_properties(ez-input PROPERTIES EXPORT_NAME "input")
 
@@ -62,6 +69,6 @@ install_package(
 	EXPORT "ez-input-targets"
 	VERSION "${EZ_INPUT_VERSION}"
 	COMPATIBILITY "SameMajorVersion"
-	DESTINATION DEFAULT
-	PRECONFIG "preconfig.cmake"
+	DESTINATION "${CONFIG_DIR}"
+	PRECONFIG "cmake/preconfig.cmake"
 )
