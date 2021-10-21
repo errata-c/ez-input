@@ -1,5 +1,6 @@
 #include <ez/input/KeyMods.hpp>
 #include <ostream>
+#include <sstream>
 
 namespace ez {
 	void KeyMods::press(KeyMods mod) noexcept {
@@ -48,7 +49,7 @@ namespace ez {
 	std::string to_string(ez::KeyMods mod) {
 		std::stringstream ss;
 
-		ss << mod;
+		::operator <<(ss, static_cast<ez::KeyModsBase>(mod));
 
 		return ss.str();
 	}

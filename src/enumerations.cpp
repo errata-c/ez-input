@@ -380,8 +380,6 @@ namespace ez {
 	}
 	std::string_view to_string_view(ez::KeyMod mod) noexcept {
 		switch (mod) {
-		case KeyMod::None:
-			return makeView("None");
 		case KeyMod::Ctrl:
 			return makeView("Ctrl");
 		case KeyMod::Alt:
@@ -485,7 +483,7 @@ namespace ez {
 
 		case InEv::None:
 			return makeView("None");
-
+		
 		default:
 			assert(false);
 			return makeView("None");
@@ -493,8 +491,6 @@ namespace ez {
 	}
 	std::string_view to_string_view(Mouse button) noexcept {
 		switch (button) {
-		case Mouse::None:
-			return makeView("None");
 		case Mouse::Left:
 			return makeView("Left");
 		case Mouse::Right:

@@ -21,23 +21,27 @@ namespace ez {
 	}
 
 	int MouseButtons::numPressed() const noexcept {
-		return numSet();
+		return static_cast<int>(numSet());
 	}
 	int MouseButtons::numReleased() const noexcept {
-		return numUnset();
+		return static_cast<int>(numUnset());
 	}
 
-	Mouse MouseButtons::lowestPressed() const noexcept {
+	MouseButtons MouseButtons::lowestPressed() const noexcept {
 		if (!empty()) {
 			return front();
 		}
-		return Mouse::None;
+		else {
+			return MouseButtons::None;
+		}
 	}
-	Mouse MouseButtons::highestPressed() const noexcept {
+	MouseButtons MouseButtons::highestPressed() const noexcept {
 		if (!empty()) {
 			return back();
 		}
-		return Mouse::None;
+		else {
+			return MouseButtons::None;
+		}
 	}
 
 	bool MouseButtons::anyPressed(MouseButtons buttons) const noexcept {
@@ -104,7 +108,7 @@ std::string ez::to_string(const ez::MouseEvent& val) {
 
 	std::array<std::string_view, 7> text{
 		makeView("{ button: "),
-		ez::to_string_view(val.button),
+		val.buttons ? ez::to_string_view(val.buttons.front()) : makeView("None"),
 		makeView(", position: ["),
 		std::string_view(xpos, std::min(15, snprintf(xpos, 16, "%.6g", val.position.x))),
 		makeView(", "),
@@ -137,9 +141,9 @@ std::string ez::to_string(const ez::MouseState& val) {
 		makeView("{ buttons: "),
 		std::string_view(buttons),
 		makeView(", justPressed: "),
-		ez::to_string_view(val.justPressed),
+		val.justPressed ? ez::to_string_view(val.justPressed.front()) : makeView("None"),
 		makeView(", justReleased: "),
-		ez::to_string_view(val.justReleased),
+		val.justReleased ? ez::to_string_view(val.justReleased.front()) : makeView("None"),
 		makeView(", position: ["),
 		std::string_view(xpos, std::min(15, snprintf(xpos, 16, "%.6g", val.position.x))),
 		makeView(", "),

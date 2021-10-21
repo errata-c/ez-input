@@ -14,6 +14,9 @@ namespace ez {
 	cryptic bullshit.
 	*/
 	enum class InputEventType : std::uint32_t {
+		// This is the type of a default constructed input event. On some backends an event will be generated with this type when the source event is unsupported.
+		None = 0,
+
 		// The mouse moved, event will contain new position.
 		MouseMove,
 
@@ -101,9 +104,6 @@ namespace ez {
 
 		// Window should be redrawn
 		Exposed,
-
-		// This is the type of a default constructed input event. On some backends an event will be generated with this type when the source event is unsupported.
-		None,
 	};
 	using InEv = InputEventType;
 
@@ -249,8 +249,8 @@ namespace ez {
 		NumKeys,
 	};
 
+	// Mouse keys enumeration
 	enum class Mouse {
-		None = -1,
 		// The left mouse button.
 		Button1 = 0,
 		// The middle mouse button.
@@ -287,6 +287,7 @@ namespace ez {
 
 		_Count,
 		_EnableOperators,
+		_None = 0,
 
 		// Left mouse button
 		Left = Button1,
@@ -296,14 +297,16 @@ namespace ez {
 		Right = Button3,
 	};
 
+	// Modifier keys enumeration
 	enum class KeyMod : std::int8_t {
-		None = -1,
 		Ctrl = 0,
 		Alt = 1,
 		Shift = 2,
 		System = 3,
+
 		_Count,
-		_EnableOperators
+		_EnableOperators,
+		_None = 0,
 	};
 
 	std::string_view to_string_view(ez::KeyMod val) noexcept;

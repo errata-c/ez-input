@@ -300,19 +300,19 @@ namespace ez::input {
 			
 			switch (ev.button.button) {
 			case SDL_BUTTON_LEFT:
-				event.mouse.button = (ez::Mouse::Left);
+				event.mouse.buttons = (ez::Mouse::Left);
 				break;
 			case SDL_BUTTON_MIDDLE:
-				event.mouse.button = (ez::Mouse::Middle);
+				event.mouse.buttons = (ez::Mouse::Middle);
 				break;
 			case SDL_BUTTON_RIGHT:
-				event.mouse.button = (ez::Mouse::Right);
+				event.mouse.buttons = (ez::Mouse::Right);
 				break;
 			case SDL_BUTTON_X1:
-				event.mouse.button = (ez::Mouse::Button4);
+				event.mouse.buttons = (ez::Mouse::Button4);
 				break;
 			case SDL_BUTTON_X2:
-				event.mouse.button = (ez::Mouse::Button5);
+				event.mouse.buttons = (ez::Mouse::Button5);
 				break;
 			}
 			event.mouse.position.x = ev.button.x;
@@ -321,7 +321,7 @@ namespace ez::input {
 
 		case SDL_MOUSEMOTION:
 			event.type = ez::InEv::MouseMove;
-			event.mouse.button = ez::Mouse::None;
+			event.mouse.buttons = ez::MouseButtons::None;
 			event.mouse.position.x = ev.motion.x;
 			event.mouse.position.y = ev.motion.y;
 			return event;

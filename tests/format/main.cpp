@@ -44,7 +44,7 @@ TEST_CASE("Format") {
 	REQUIRE(fmt::format("{}", mouse0) == "Left");
 
 	ez::MouseEvent mouse1{};
-	mouse1.button = ez::Mouse::Middle;
+	mouse1.buttons = ez::Mouse::Middle;
 	mouse1.position = glm::dvec2{ 20, 20 };
 	fmt::print("mouse1 == {}\n", mouse1);
 	REQUIRE(fmt::format("{}", mouse1) == "{ button: Middle, position: [20, 20] }");

@@ -231,19 +231,19 @@ namespace ez::input {
 			event.mouse.position = glm::dvec2{in.mouseButton.x, in.mouseButton.y};
 			switch (in.mouseButton.button) {
 			case sf::Mouse::Button::Left:
-				event.mouse.button = Mouse::Left;
+				event.mouse.buttons = Mouse::Left;
 				break;
 			case sf::Mouse::Button::Right:
-				event.mouse.button = Mouse::Right;
+				event.mouse.buttons = Mouse::Right;
 				break;
 			case sf::Mouse::Button::Middle:
-				event.mouse.button = Mouse::Middle;
+				event.mouse.buttons = Mouse::Middle;
 				break;
 			case sf::Mouse::Button::XButton1:
-				event.mouse.button = Mouse::Button4;
+				event.mouse.buttons = Mouse::Button4;
 				break;
 			case sf::Mouse::Button::XButton2:
-				event.mouse.button = Mouse::Button5;
+				event.mouse.buttons = Mouse::Button5;
 				break;
 			}
 			return event;
@@ -254,19 +254,19 @@ namespace ez::input {
 			event.mouse.position = glm::dvec2{ in.mouseButton.x, in.mouseButton.y };
 			switch (in.mouseButton.button) {
 			case sf::Mouse::Button::Left:
-				event.mouse.button = Mouse::Left;
+				event.mouse.buttons = Mouse::Left;
 				break;
 			case sf::Mouse::Button::Right:
-				event.mouse.button = Mouse::Right;
+				event.mouse.buttons = Mouse::Right;
 				break;
 			case sf::Mouse::Button::Middle:
-				event.mouse.button = Mouse::Middle;
+				event.mouse.buttons = Mouse::Middle;
 				break;
 			case sf::Mouse::Button::XButton1:
-				event.mouse.button = Mouse::Button4;
+				event.mouse.buttons = Mouse::Button4;
 				break;
 			case sf::Mouse::Button::XButton2:
-				event.mouse.button = Mouse::Button5;
+				event.mouse.buttons = Mouse::Button5;
 				break;
 			}
 			return event;

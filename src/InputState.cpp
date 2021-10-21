@@ -56,13 +56,13 @@ namespace ez {
 			break;
 		case InEv::MousePress:
 			mouse.position = event.mouse.position;
-			mouse.buttons.press(event.mouse.button);
-			mouse.justPressed = event.mouse.button;
+			mouse.buttons.press(event.mouse.buttons);
+			mouse.justPressed = event.mouse.buttons;
 			break;
 		case InEv::MouseRelease:
 			mouse.position = event.mouse.position;
-			mouse.buttons.release(event.mouse.button);
-			mouse.justReleased = event.mouse.button;
+			mouse.buttons.release(event.mouse.buttons);
+			mouse.justReleased = event.mouse.buttons;
 			break;
 		case InEv::Resized:
 			size = event.size;

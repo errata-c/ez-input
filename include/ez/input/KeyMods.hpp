@@ -44,8 +44,8 @@ namespace ez {
 
 	std::string to_string(KeyMods mod);
 
-	// Fix namespace look up, allows operator to be used inside the namespace, also fixes lookup in libfmt
-	inline std::ostream& operator<<(std::ostream& os, KeyMods mods) {
-		return ::operator<<(os, mods);
+	inline std::ostream& operator<<(std::ostream& os, ez::KeyModsBase mods) {
+		::operator <<(os, mods);
+		return os;
 	}
 };

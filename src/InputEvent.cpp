@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include <utf8h/utf8.h>
+#include <utf8cpp/utf8.h>
 
 template<std::size_t N>
 std::string_view makeView(const char(&arr)[N]) {
@@ -62,20 +62,18 @@ namespace ez {
 	}
 
 	bool InputEvent::setCodepointFromUTF8(std::string_view str8) {
-		const void* text = str8.data();
-		union Conv {
-			std::int32_t sval;
-			std::uint32_t uval;
-		} data;
+		const char * first = str8.data();
+		const char * last = first + str8.size();
 
-		void* next = utf8codepoint(text, &data.sval);
-		if (next == text) {
-			codepoint = 0;
-			return false;
+		if (utf8::is_valid(first, last)) {
+			uint32_t result;
+			utf8::utf8to32(first, last, &result);
+
+			codepoint = result;
+			return true;
 		}
 		else {
-			codepoint = data.uval;
-			return true;
+			return false;
 		}
 	}
 

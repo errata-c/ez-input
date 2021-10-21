@@ -28,8 +28,8 @@ namespace ez {
 		int numPressed() const noexcept;
 		int numReleased() const noexcept;
 
-		Mouse lowestPressed() const noexcept;
-		Mouse highestPressed() const noexcept;
+		MouseButtons lowestPressed() const noexcept;
+		MouseButtons highestPressed() const noexcept;
 
 		bool anyPressed(MouseButtons button) const noexcept;
 		bool allPressed(MouseButtons button) const noexcept;
@@ -39,35 +39,38 @@ namespace ez {
 	// Stores mouse buttons data and the most recent mouse position, used by InputEvent and InputState classes.
 	struct MouseEvent {
 		MouseEvent() noexcept
-			: button(Mouse::None)
+			: buttons()
 			, position(0.0)
 		{}
-
 		MouseEvent(Mouse _button) noexcept
-			: button(_button)
+			: buttons(_button)
+			, position(0.0)
+		{}
+		MouseEvent(MouseButtons _button) noexcept
+			: buttons(_button)
 			, position(0.0)
 		{}
 
-		Mouse button;
+		MouseButtons buttons;
 		glm::dvec2 position;
 	};
 
 	struct MouseState {
 		MouseState()
-			: justPressed(Mouse::None)
-			, justReleased(Mouse::None)
+			: justPressed(MouseButtons::None)
+			, justReleased(MouseButtons::None)
 			, position(0.0)
 		{}
 
 		void reset() {
-			justPressed = Mouse::None;
-			justReleased = Mouse::None;
+			justPressed = MouseButtons::None;
+			justReleased = MouseButtons::None;
 			position = glm::dvec2(0.0);
 			buttons.clear();
 		}
 
 		MouseButtons buttons;
-		Mouse justPressed, justReleased;
+		MouseButtons justPressed, justReleased;
 		glm::dvec2 position;
 	};
 
